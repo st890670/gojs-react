@@ -1,4 +1,4 @@
-import ChartWrapper from './ChartWrapper';
+import DiagramWrapper from './DiagramWrapper';
 import go from 'gojs';
 
 const MOCK_NODE_DATA = [
@@ -28,7 +28,7 @@ function Chart() {
   }
 
   return (
-    <ChartWrapper
+    <DiagramWrapper
       nodeDataArray={MOCK_NODE_DATA}
       linkDataArray={MOCK_LINK_DATA}
       onModelChange={handleModelChange}

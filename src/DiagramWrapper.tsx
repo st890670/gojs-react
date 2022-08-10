@@ -11,7 +11,7 @@ interface Props {
   onModelChange?: (e: go.IncrementalData) => void;
 }
 
-function ChartWrapper({
+function DiagramWrapper({
   nodeDataArray = [],
   linkDataArray = [],
   onModelChange = () => undefined,
@@ -69,4 +69,4 @@ function ChartWrapper({
   );
 }
 
-export default ChartWrapper;
+export default DiagramWrapper;
