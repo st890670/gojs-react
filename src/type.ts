@@ -16,4 +16,9 @@ interface NodeData {
   color: string;
 }
 
-export type { SourceData, NodeData };
+interface NodeAdapter {
+  color: string;
+  shape: 'Ellipse' | 'RoundedRectangle';
+}
+
+export type { SourceData, NodeData, NodeAdapter };

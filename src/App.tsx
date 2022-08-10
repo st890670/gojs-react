@@ -1,6 +1,6 @@
 import DiagramWrapper from './DiagramWrapper';
 import go from 'gojs';
-import { NodeType, SourceData, NodeData } from './type';
+import { NodeType, SourceData, NodeData, NodeAdapter } from './type';
 import { useMemo, useCallback } from 'react';
 
 const MOCK_DATA: Array<SourceData> = [
@@ -37,18 +37,27 @@ function Chart() {
     console.log(changes);
   }
 
-  const calculateNodeColorByType = useCallback((type: NodeType) => {
-    switch (type) {
-      case NodeType.Overview:
-        return 'green';
-      case NodeType.Question:
-        return 'gray';
-      case NodeType.Answer:
-        return 'pink';
-      default:
-        return 'white';
-    }
-  }, []);
+  const calculateNodePropertiesByType = useCallback(
+    (type: NodeType): NodeAdapter => {
+      switch (type) {
+        case NodeType.Overview:
+          return {
+            color: 'green',
+            shape: 'Ellipse',
+          };
+        case NodeType.Question:
+          return {
+            color: 'gray',
+            shape: 'RoundedRectangle',
+          };
+        case NodeType.Answer:
+          return { color: 'pink', shape: 'Ellipse' };
+        default:
+          return { color: 'white', shape: 'Ellipse' };
+      }
+    },
+    []
+  );
 
   const convertSourceDataToNodeData = useCallback(
     (sourceData: Array<SourceData>) => {
@@ -56,11 +65,11 @@ function Chart() {
         return {
           key: rowData.id,
           text: rowData.text,
-          color: calculateNodeColorByType(rowData.type),
+          ...calculateNodePropertiesByType(rowData.type),
         } as NodeData;
       });
     },
-    [calculateNodeColorByType]
+    [calculateNodePropertiesByType]
   );
 
   const renderNodeData = useMemo(
