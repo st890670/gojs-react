@@ -28,6 +28,9 @@ function DiagramWrapper({
       {
         'undoManager.isEnabled': true,
         'undoManager.maxHistoryLength': 0, // disable undo/redo functionality
+        allowMove: false,
+        allowCopy: false,
+        allowDelete: false,
         'clickCreatingTool.archetypeNodeData': {
           text: 'new node',
           color: 'lightblue',
