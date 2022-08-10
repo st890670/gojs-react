@@ -1,24 +1,34 @@
 import DiagramWrapper from './DiagramWrapper';
 import go from 'gojs';
+import { NodeType, SourceData, NodeData } from './type';
+import { useMemo, useCallback } from 'react';
 
-const MOCK_NODE_DATA = [
+const MOCK_DATA: Array<SourceData> = [
   {
-    key: 0,
-    text: 'One',
-    color: 'orange',
+    id: 0,
+    text: 'overview',
+    type: NodeType.Overview,
   },
   {
-    key: 1,
-    text: 'Two',
-    color: 'blue',
+    id: 1,
+    text: 'question',
+    type: NodeType.Question,
   },
-] as Array<go.ObjectData>;
+  {
+    id: 2,
+    text: 'anwser',
+    type: NodeType.Answer,
+  },
+];
 
 const MOCK_LINK_DATA = [
   {
-    key: -1,
     from: 0,
     to: 1,
+  },
+  {
+    from: 1,
+    to: 2,
   },
 ] as Array<go.ObjectData>;
 
@@ -27,9 +37,40 @@ function Chart() {
     console.log(changes);
   }
 
+  const calculateNodeColorByType = useCallback((type: NodeType) => {
+    switch (type) {
+      case NodeType.Overview:
+        return 'green';
+      case NodeType.Question:
+        return 'gray';
+      case NodeType.Answer:
+        return 'pink';
+      default:
+        return 'white';
+    }
+  }, []);
+
+  const convertSourceDataToNodeData = useCallback(
+    (sourceData: Array<SourceData>) => {
+      return sourceData.map((rowData) => {
+        return {
+          key: rowData.id,
+          text: rowData.text,
+          color: calculateNodeColorByType(rowData.type),
+        } as NodeData;
+      });
+    },
+    [calculateNodeColorByType]
+  );
+
+  const renderNodeData = useMemo(
+    () => convertSourceDataToNodeData(MOCK_DATA),
+    [convertSourceDataToNodeData]
+  );
+
   return (
     <DiagramWrapper
-      nodeDataArray={MOCK_NODE_DATA}
+      nodeDataArray={renderNodeData}
       linkDataArray={MOCK_LINK_DATA}
       onModelChange={handleModelChange}
     />

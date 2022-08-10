@@ -20,10 +20,12 @@ function DiagramWrapper({
 
   function initDiagram() {
     const $ = go.GraphObject.make;
-    // set your license key here before creating the diagram: go.Diagram.licenseKey = "...";
+
+    // should set your license key here before creating the diagram: go.Diagram.licenseKey = "...";
+
     const diagram = $(go.Diagram, {
-      'undoManager.isEnabled': true, // must be set to allow for model change listening
-      // 'undoManager.maxHistoryLength': 0,  // uncomment disable undo/redo functionality
+      'undoManager.isEnabled': true,
+      'undoManager.maxHistoryLength': 0, // disable undo/redo functionality
       'clickCreatingTool.archetypeNodeData': {
         text: 'new node',
         color: 'lightblue',
@@ -33,7 +35,6 @@ function DiagramWrapper({
       }),
     });
 
-    // define a simple Node template
     diagram.nodeTemplate = $(
       go.Node,
       'Auto', // the Shape will go around the TextBlock
@@ -42,14 +43,19 @@ function DiagramWrapper({
       ),
       $(
         go.Shape,
-        'RoundedRectangle',
-        { name: 'SHAPE', fill: 'white', strokeWidth: 0 },
-        // Shape.fill is bound to Node.data.color
+        'Ellipse',
+        {
+          name: 'SHAPE',
+          width: 200,
+          height: 200,
+          stroke: '#000000',
+          strokeWidth: 1,
+        },
         new go.Binding('fill', 'color')
       ),
       $(
         go.TextBlock,
-        { margin: 8, editable: true }, // some room around the text
+        { margin: 8, editable: true },
         new go.Binding('text').makeTwoWay()
       )
     );
